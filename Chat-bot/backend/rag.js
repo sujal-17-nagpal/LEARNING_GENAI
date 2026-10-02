@@ -36,6 +36,7 @@ async function findBestChunk(query,chunkVector,chunks){
             bestChunk = i;
         }
     }
+    if(bestSimilarity < 0.6) return null;
     return chunks[bestChunk]
 }
 
@@ -55,6 +56,10 @@ async function main(){
 
     const userQuestion = "My laptop fell into a pool. Can I get a free repair?";
     const relevantChunk = await findBestChunk(userQuestion,chunkVector,chunks)
+    if(!relevantChunk){
+        console.log("sorry , i cannot answer to this")
+        return;
+    }
     console.log(`relevant chunk : ${relevantChunk}`)
 
     const prompt = "Answer this question using this rule: " + relevantChunk + ". Question: " + userQuestion;
